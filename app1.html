@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>List Organizer</title>
+  <!-- Cargar fuentes: Alegreya para títulos y Labrada para párrafos -->
+  <link href="https://fonts.googleapis.com/css?family=Alegreya:900|Labrada&display=swap" rel="stylesheet">
+  <!-- Íconos de Material Icons (alternativa a Font Awesome) -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Reset de estilos básicos */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Labrada', serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-family: 'Alegreya', serif;
+      font-weight: 900;
+      font-size: 2.5rem;
+    }
+    main {
+      width: 90%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    /* Sección para crear nuevas listas */
+    #new-list {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #new-list input {
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      width: 70%;
+      margin-right: 10px;
+    }
+    #new-list button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    #new-list button .material-icons {
+      margin-right: 5px;
+    }
+    /* Contenedor de tarjetas de listas */
+    #lists-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .list-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 300px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .list-card h2 {
+      font-family: 'Alegreya', serif;
+      font-weight: 900;
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    .list-card ul {
+      list-style: none;
+    }
+    .list-card li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .list-card li:last-child {
+      border-bottom: none;
+    }
+    .list-card li .material-icons {
+      cursor: pointer;
+      color: #dc3545;
+    }
+    /* Sección para agregar nuevos elementos a la lista */
+    .add-item {
+      display: flex;
+      margin-top: 10px;
+    }
+    .add-item input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+    }
+    .add-item button {
+      padding: 8px 12px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .add-item button .material-icons {
+      margin-right: 5px;
+    }
+    /* Diseño responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      #new-list input {
+        width: 60%;
+      }
+    }
+    input, button {
+      font-family: 'Labrada', serif;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>List Organizer</h1>
+  </header>
+  <main>
+    <!-- Sección para crear una nueva lista -->
+    <section id="new-list">
+      <input type="text" id="list-title" placeholder="New List Title">
+      <button id="create-list">
+        <span class="material-icons">playlist_add</span> Create List
+      </button>
+    </section>
+    <!-- Contenedor donde se agregarán las listas creadas -->
+    <section id="lists-container"></section>
+  </main>
+  <script>
+    // Referencias a los elementos del DOM
+    const listTitleInput = document.getElementById('list-title');
+    const createListButton = document.getElementById('create-list');
+    const listsContainer = document.getElementById('lists-container');
+
+    // Evento para crear una nueva lista
+    createListButton.addEventListener('click', () => {
+      const title = listTitleInput.value.trim();
+      if (title !== '') {
+        createListCard(title);
+        listTitleInput.value = '';
+      } else {
+        alert('Please enter a list title.');
+      }
+    });
+
+    // Función para crear la tarjeta de una lista
+    function createListCard(title) {
+      // Crear contenedor de la tarjeta
+      const card = document.createElement('div');
+      card.classList.add('list-card');
+
+      // Crear título de la lista
+      const listTitle = document.createElement('h2');
+      listTitle.textContent = title;
+      card.appendChild(listTitle);
+
+      // Crear la lista de elementos
+      const ul = document.createElement('ul');
+      card.appendChild(ul);
+
+      // Contenedor para agregar nuevos elementos
+      const addItemDiv = document.createElement('div');
+      addItemDiv.classList.add('add-item');
+
+      const itemInput = document.createElement('input');
+      itemInput.type = 'text';
+      itemInput.placeholder = 'New item';
+      addItemDiv.appendChild(itemInput);
+
+      const addItemButton = document.createElement('button');
+      addItemButton.innerHTML = '<span class="material-icons">add</span> Add';
+      addItemDiv.appendChild(addItemButton);
+
+      card.appendChild(addItemDiv);
+
+      // Evento para agregar elementos a la lista
+      addItemButton.addEventListener('click', () => {
+        const itemText = itemInput.value.trim();
+        if (itemText !== '') {
+          const li = document.createElement('li');
+          li.textContent = itemText;
+          
+          // Ícono para eliminar el elemento
+          const deleteIcon = document.createElement('span');
+          deleteIcon.classList.add('material-icons');
+          deleteIcon.textContent = 'delete';
+          deleteIcon.addEventListener('click', () => {
+            ul.removeChild(li);
+          });
+          li.appendChild(deleteIcon);
+          ul.appendChild(li);
+          itemInput.value = '';
+        }
+      });
+
+      listsContainer.appendChild(card);
+    }
+  </script>
+</body>
+</html>
